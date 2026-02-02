@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cake Mission 🍰</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle, #1e293b, #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+.box {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 15px;
+}
+
+img {
+  width: 140px;
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 12px 26px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+#yes {
+  background: #22c55e;
+  margin-right: 15px;
+}
+
+#no {
+  background: #ef4444;
+  position: absolute;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+  }
+}
+
+.gift {
+  font-size: 80px;
+  cursor: pointer;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="box">
+  <img src="https://cdn-icons-png.flaticon.com/512/2934/2934880.png" alt="cake">
+  <h1>Will you give me my cake? 🎂</h1>
+  <button id="yes">Yes</button>
+  <button id="no">No</button>
+</div>
+
+<audio id="pop" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<audio id="yay" src="https://www.soundjay.com/human/sounds/applause-8.mp3"></audio>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const box = document.getElementById("box");
+const pop = document.getElementById("pop");
+const yay = document.getElementById("yay");
+
+// No button escapes 😈
+function runAway() {
+  pop.play();
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 100);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", runAway);
+noBtn.addEventListener("touchstart", runAway);
+
+// Yes clicked 🎉
+yesBtn.addEventListener("click", () => {
+  yay.play();
+  confettiBlast();
+
+  setTimeout(() => {
+    box.innerHTML = `
+      <h1>Where is my gift? 🎁</h1>
+      <div class="gift" id="gift">🎁</div>
+    `;
+
+    document.getElementById("gift").onclick = () => {
+      box.innerHTML = "<h1>Mission Complete 😌<br>You owe me cake AND gift 🍰🎁</h1>";
+    };
+  }, 1500);
+});
+
+// Confetti 🎊
+function confettiBlast() {
+  for (let i = 0; i < 180; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * window.innerWidth + "px";
+    c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+    c.style.animationDuration = (Math.random()*2+2)+"s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+</script>
+
+</body>
+</html>
